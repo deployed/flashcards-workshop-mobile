@@ -1,19 +1,20 @@
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 import {
-  Jost_100Thin,
-  // Jost_300Light,
+  Jost_300Light,
+  Jost_400Regular,
+  Jost_700Bold,
   useFonts,
 } from '@expo-google-fonts/jost';
 
 export default function RootLayout() {
 
   const [loaded, error] = useFonts({
-    Jost_100Thin,
-    // Jost_300Light
+    Jost_300Light,
+    Jost_400Regular,
+    Jost_700Bold,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -22,5 +23,7 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Stack />;
+  return (<Stack screenOptions={{headerShown: false}}>
+    <Stack.Screen name='index'/>
+  </Stack>)
 }

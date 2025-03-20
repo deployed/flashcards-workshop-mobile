@@ -1,11 +1,23 @@
-import {Button} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Typography} from './Typography';
 
 type ButtonProps = {
-    title: string
+    children: string,
+    onPress():void;
 }
 
-export const CustomButton = ({title}: ButtonProps) => {
+export const Button = ({children, onPress}: ButtonProps) => {
     return(
-        <Button color='#112249' title={title}/>
+        <TouchableOpacity onPress={onPress} style={styles.button}>
+           <Typography color='LIGHT' >{children}</Typography>
+        </TouchableOpacity>
     )
 }
+
+const styles = StyleSheet.create({
+    button:{
+        backgroundColor: '#112249',
+        padding: 10,
+        borderRadius: 6,
+    }
+})
