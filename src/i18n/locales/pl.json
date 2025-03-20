@@ -4,5 +4,10 @@
     "createFlashcards": "Stwórz swój zestaw fiszek od zera",
     "challengeYourself": "Mając już stworzone fiszki, podejmij wyzwanie i sprawdź czego się nauczyłeś",
     "testYourself": "Sprawdź się"
+  },
+  "challenge": {
+    "selectFlashcards": "Wybierz zestaw fiszek do nauki i sprawdź się",
+    "createNewFlashcards": "Lub stwórz nowe fiszki",
+    "back": "Powrót"
   }
 }

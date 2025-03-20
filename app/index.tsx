@@ -1,20 +1,15 @@
-import { ImageBackground, StyleSheet, View } from 'react-native';
-import { Button, Typography } from '@/components';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import {  StyleSheet, View } from 'react-native';
+import { BackgroundContainer, Button, Typography } from '@/components';
 import LogoIcon from '../assets/svgs/logo.svg';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 
 export default function Index() {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>
-        <ImageBackground
-          source={require('../assets/images/home.png')}
-          resizeMode="cover"
-          style={styles.image}
-        >
+         <BackgroundContainer imagePath={require('../assets/images/home.png')}>
           <View style={styles.innerContainer}>
             <LogoIcon />
             <View style={styles.content}>
@@ -23,25 +18,16 @@ export default function Index() {
                 {t("home.startHere")}
               </Button>
               <Typography>{t("home.challengeYourself")}</Typography>
-              <Button onPress={() => console.log(t("home.testYourself"))}>
+              <Button onPress={() => router.push('/challenge')}>
                 {t("home.testYourself")}
               </Button>
             </View>
           </View>
-        </ImageBackground>
-      </SafeAreaView>
-    </SafeAreaProvider>
+         </BackgroundContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   innerContainer: {
     flex: 1,
     justifyContent: 'space-between',

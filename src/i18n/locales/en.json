@@ -4,6 +4,11 @@
       "createFlashcards": "Create your flashcard set from scratch",
       "challengeYourself": "Once you have created your flashcards, take the challenge and see what you've learned",
       "testYourself": "Test yourself"
+    },
+    "challenge": {
+        "selectFlashcards": "Select a flashcard set to learn\n and test yourself",
+        "createNewFlashcards": "Or create new flashcards",
+        "back": "Back"
     }
   }
   
