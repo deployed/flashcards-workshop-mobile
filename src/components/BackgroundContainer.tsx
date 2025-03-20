@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageBackground, type ImageSourcePropType, StyleSheet } from 'react-native';
+
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 interface BackgroundContainerProps {
@@ -7,7 +8,10 @@ interface BackgroundContainerProps {
   imagePath: ImageSourcePropType;
 }
 
-export const BackgroundContainer: React.FC<BackgroundContainerProps> = ({ children, imagePath }) => {
+export const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
+  children,
+  imagePath,
+}) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>

@@ -4,10 +4,10 @@ import { initReactI18next } from 'react-i18next';
 
 import { resources } from './locales';
 
-const deviceLocale = getLocales()[0]?.languageCode ?? 'en'; 
+const deviceLocale = getLocales()[0]?.languageCode ?? 'en';
 
 i18next.use(initReactI18next).init({
-  lng: deviceLocale, 
+  lng: deviceLocale,
   fallbackLng: 'en',
   resources,
   compatibilityJSON: 'v4',
