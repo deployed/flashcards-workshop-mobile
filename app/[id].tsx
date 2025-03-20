@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
-
+import {useMutation, useQueryClient, useQuery} from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-
+import { deleteFlashCardSet, fetchFlashCardSet } from '@/api/challenges';
 import { BackgroundContainer, Button, Typography } from '@/components';
 
 import LogoIcon from '../assets/svgs/logo.svg';
@@ -11,13 +11,30 @@ const ChallengeSettings = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { data } = useQuery({ queryKey: ['flash-card-set', id], queryFn: () =>  fetchFlashCardSet(id) });
+
+  const {mutate } =  useMutation({
+    mutationFn: () =>  deleteFlashCardSet(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['flash-card-sets'] });
+      queryClient.invalidateQueries({ queryKey: ['flash-card-set', id] });
+    },
+  });
+
+
+    const handleDelete = () => {
+         mutate();
+        router.back();
+    }
 
   return (
     <BackgroundContainer imagePath={require('../assets/images/challenge.png')}>
       <View style={styles.innerContainer}>
         <View style={styles.logo}>
           <LogoIcon />
-          <Typography>Zestaw Angielski</Typography>
+          <Typography>{data?.title ?? "Flash Card Set"}</Typography>
         </View>
         <View style={{ gap: 100, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
@@ -25,7 +42,7 @@ const ChallengeSettings = () => {
               {t('settings.testYourself')}
             </Button>
             <Button onPress={() => console.log('Edit set')}>{t('settings.editSet')}</Button>
-            <Button onPress={() => console.log('Delete set')}>{t('settings.deleteSet')}</Button>
+            <Button onPress={handleDelete}>{t('settings.deleteSet')}</Button>
           </View>
           <Button style={{ paddingHorizontal: 30 }} onPress={() => router.back()}>
             {t('challenge.back')}
