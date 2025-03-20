@@ -27,7 +27,7 @@ type TypographyType = {
 
 export const Typography = ({ children, font = "LIGHT", size = "MEDIUM", color = "DARK" }: TypographyType) => {
     return (
-        <Text style={{ fontFamily: baseTheme.fonts[font], fontSize: baseTheme.fontSizes[size], color: baseTheme.color[color] }}>
+        <Text style={{ fontFamily: baseTheme.fonts[font], fontSize: baseTheme.fontSizes[size], color: baseTheme.color[color], textAlign: 'center' }}>
             {children}
         </Text>
     );

@@ -1,45 +1,46 @@
-import {ImageBackground, StyleSheet, View} from 'react-native';
-import {Button, Typography} from '@/components';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import { Button, Typography } from '@/components';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import LogoIcon from '../assets/svgs/logo.svg';
+import { useTranslation } from 'react-i18next';
 
 export default function Index() {
+  const { t } = useTranslation();
+
   return (
     <SafeAreaProvider>
-    <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>
-     <ImageBackground source={require('../assets/images/home.png')} resizeMode="cover" style={styles.image} >
-          <View
-            style={styles.innerContainer}
-          >
-            <LogoIcon/>
+      <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>
+        <ImageBackground
+          source={require('../assets/images/home.png')}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <View style={styles.innerContainer}>
+            <LogoIcon />
             <View style={styles.content}>
-              <Typography>Stwórz swój zestaw fiszek od zera</Typography>
-              <Button onPress={()=> console.log("Zacznij tutaj")}>Zacznij tutaj</Button>
-              <Typography>Mając już stworzone fiszki, podejmij wyzwanie i sprawdź czego się nauczyłeś</Typography>
-              <Button onPress={()=> console.log("Sprawdź się")}>Sprawdź się</Button>
+              <Typography>{t("home.createFlashcards")}</Typography>
+              <Button onPress={() => console.log(t("home.startHere"))}>
+                {t("home.startHere")}
+              </Button>
+              <Typography>{t("home.challengeYourself")}</Typography>
+              <Button onPress={() => console.log(t("home.testYourself"))}>
+                {t("home.testYourself")}
+              </Button>
             </View>
           </View>
-    </ImageBackground>
-    </SafeAreaView>
-  </SafeAreaProvider>
+        </ImageBackground>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
- outerContainer: {
+  outerContainer: {
     flex: 1,
   },
   image: {
     flex: 1,
     justifyContent: 'center',
-  },
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: '#000000c0',
   },
   innerContainer: {
     flex: 1,
@@ -51,5 +52,5 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
