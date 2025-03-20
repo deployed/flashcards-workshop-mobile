@@ -9,6 +9,12 @@
         "selectFlashcards": "Select a flashcard set to learn\n and test yourself",
         "createNewFlashcards": "Or create new flashcards",
         "back": "Back"
+    },
+    "settings": {
+      "testYourself": "Test yourself",
+      "editSet": "Edit set",
+      "deleteSet": "Delete set",
+      "back": "Back"
     }
-  }
+}
   

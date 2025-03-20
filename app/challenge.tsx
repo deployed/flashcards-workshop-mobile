@@ -16,7 +16,7 @@ const Challenge = () => {
                 </View>
                 <View style={{gap: 30, alignItems: 'center'}} >
                     <View style={styles.flashCardsButtons}>
-                        <Button onPress={() => console.log("English")}>Zestaw angielski</Button>
+                        <Button onPress={() => router.push('/1')}>Zestaw angielski</Button>
                         <Button onPress={() => console.log("Italian")}>Zestaw włoski</Button>
                         <Button onPress={() => console.log("Polish")}>Zestaw polski</Button>
                     </View>

@@ -9,5 +9,11 @@
     "selectFlashcards": "Wybierz zestaw fiszek do nauki i sprawdź się",
     "createNewFlashcards": "Lub stwórz nowe fiszki",
     "back": "Powrót"
+  },
+  "settings": {
+    "testYourself": "Sprawdź się",
+    "editSet": "Edytuj zestaw",
+    "deleteSet": "Usuń zestaw",
+    "back": "Powrót"
   }
 }
