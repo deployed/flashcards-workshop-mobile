@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 
-const baseTheme = {
+export const baseTheme = {
   fonts: {
     LIGHT: 'Jost_300Light',
     REGULAR: 'Jost_400Regular',
@@ -10,6 +10,7 @@ const baseTheme = {
     SMALL: 14,
     MEDIUM: 16,
     LARGE: 20,
+    SUPER_LARGE: 40
   },
   color: {
     DARK: '#000',
@@ -18,10 +19,11 @@ const baseTheme = {
 } as const;
 
 type TypographyType = {
-  children: string;
+  children: string | number;
   font?: keyof typeof baseTheme.fonts;
   size?: keyof typeof baseTheme.fontSizes;
   color?: keyof typeof baseTheme.color;
+  textAlign?: 'center' | 'left';
 };
 
 export const Typography = ({
@@ -29,6 +31,7 @@ export const Typography = ({
   font = 'LIGHT',
   size = 'MEDIUM',
   color = 'DARK',
+ textAlign = 'center',
 }: TypographyType) => {
   return (
     <Text
@@ -36,7 +39,7 @@ export const Typography = ({
         fontFamily: baseTheme.fonts[font],
         fontSize: baseTheme.fontSizes[size],
         color: baseTheme.color[color],
-        textAlign: 'center',
+        textAlign
       }}
     >
       {children}

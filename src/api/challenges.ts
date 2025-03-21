@@ -23,3 +23,13 @@ export const fetchFlashCardSet = async (id: string): Promise<FlashCardSet> => {
 };
   
   
+export const createFlashCardSet = async (title: string): Promise<FlashCardSet> => {
+  const response = await axios.post<FlashCardSet>(`flash-card-sets/`, { title, description: title, is_Active: true });
+  return response.data;
+};
+
+
+export const createFlashCard = async (id: string, question: string, answer: string): Promise<FlashCardSet> => {
+  const response = await axios.post<FlashCardSet>(`flash-card-sets/${id}/flash-cards/`, {question , answer, flashcard_set: id});
+  return response.data;
+};

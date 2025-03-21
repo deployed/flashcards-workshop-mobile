@@ -15,5 +15,19 @@
     "editSet": "Edit set",
     "deleteSet": "Delete set",
     "back": "Back"
+  },
+  "create": {
+    "enterSetName": "Enter set name",
+    "placeholder": "Enter name here...",
+    "save": "Save",
+    "cancel": "Cancel"
+  }, 
+  "flashcard": {
+    "title": "Flashcard",
+    "enterBothSides": "Enter both sides of the card",
+    "textPlaceholder": "Enter text...",
+    "translationPlaceholder": "Enter translation...",
+    "continue": "Continue",
+    "finish": "Finish"
   }
 }

@@ -29,6 +29,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="challenge" />
+          <Stack.Screen name="create" />
         </Stack>
       </I18nextProvider>
     </QueryClientProvider>

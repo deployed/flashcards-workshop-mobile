@@ -25,7 +25,7 @@ const ChallengeSettings = () => {
 
 
     const handleDelete = () => {
-         mutate();
+        mutate();
         router.back();
     }
 
@@ -38,7 +38,7 @@ const ChallengeSettings = () => {
         </View>
         <View style={{ gap: 100, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
-            <Button style={{ paddingHorizontal: 50 }} onPress={() => console.log('Test yourself')}>
+            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.push('/create')}>
               {t('settings.testYourself')}
             </Button>
             <Button onPress={() => console.log('Edit set')}>{t('settings.editSet')}</Button>

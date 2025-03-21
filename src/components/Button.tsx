@@ -1,17 +1,18 @@
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
-import { Typography } from './Typography';
+import { Typography, baseTheme } from './Typography';
 
 type ButtonProps = {
   children: string;
   onPress(): void;
+  textColor?: keyof typeof baseTheme.color;
   style?: StyleProp<ViewStyle>;
 };
 
-export const Button = ({ children, onPress, style }: ButtonProps) => {
+export const Button = ({ children, onPress, style, textColor = "LIGHT" }: ButtonProps) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Typography color="LIGHT">{children}</Typography>
+      <Typography color={textColor}>{children}</Typography>
     </TouchableOpacity>
   );
 };

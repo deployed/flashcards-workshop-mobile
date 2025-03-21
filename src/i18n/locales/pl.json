@@ -15,5 +15,19 @@
     "editSet": "Edytuj zestaw",
     "deleteSet": "Usuń zestaw",
     "back": "Powrót"
+  },
+  "create": {
+    "enterSetName": "Podaj nazwę zestawu",
+    "placeholder": "Tutaj wpisz nazwę...",
+    "save": "Zapisz",
+    "cancel": "Anuluj"
+  },
+  "flashcard": {
+    "title": "Fiszka",
+    "enterBothSides": "Wpisz obydwie karteczki",
+    "textPlaceholder": "Wpisz tekst...",
+    "translationPlaceholder": "Wpisz tłumaczenie...",
+    "continue": "Kontynuuj",
+    "finish": "Zakończ"
   }
 }

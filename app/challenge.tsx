@@ -29,7 +29,7 @@ const Challenge = () => {
               </Button>
             ))}
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/create')}>
             <Typography size="LARGE" font="REGULAR">
               {t('challenge.createNewFlashcards')}
             </Typography>
