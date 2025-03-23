@@ -41,7 +41,7 @@ const ChallengeSettings = () => {
             <Button style={{ paddingHorizontal: 50 }} onPress={() => router.push('/create')}>
               {t('settings.testYourself')}
             </Button>
-            <Button onPress={() => console.log('Edit set')}>{t('settings.editSet')}</Button>
+            <Button onPress={() => router.push(`/edit/${id}`)}>{t('settings.editSet')}</Button>
             <Button onPress={handleDelete}>{t('settings.deleteSet')}</Button>
           </View>
           <Button style={{ paddingHorizontal: 30 }} onPress={() => router.back()}>

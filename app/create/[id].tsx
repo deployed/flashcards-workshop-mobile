@@ -20,11 +20,11 @@ const Create = () => {
   const [flashCardNumber, setFlashCardsNumber] = useState(1);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-
+  
   const {mutate } =  useMutation({
     mutationFn: () => createFlashCard(id, question, answer),
-    onSuccess: (data) =>{ 
-      setFlashCardsNumber(data.id + 1);
+    onSuccess: () =>{ 
+      setFlashCardsNumber((prev) => prev + 1);
       setQuestion('');
       setAnswer('');
   }
