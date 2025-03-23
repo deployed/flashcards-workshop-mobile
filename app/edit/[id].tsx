@@ -12,6 +12,8 @@ import { FlashCardInput } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { editFlashCard, fetchFlashCards } from '@/api/challenges';
+import LeftArrowIcon from '../../assets/svgs/left-arrow.svg';
+import RightArrowIcon from '../../assets/svgs/right-arrow.svg';
 
 const Edit = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -53,8 +55,8 @@ const Edit = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <BackgroundContainer imagePath={require('../../assets/images/challenge.png')}>
+    <BackgroundContainer imagePath={require('../../assets/images/challenge.png')}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
           <View style={styles.innerContainer}>
             <View style={{ marginBottom: 50 }}>
@@ -81,25 +83,36 @@ const Edit = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <Button style={{ width: '100%' }} onPress={handleContinue}>
-                {t('flashcard.continue')}
-              </Button>
+              <View style={styles.arrowButtons}>
+                <LeftArrowIcon onPress={() => currentIndex >= 1 ? setCurrentIndex((prev) => prev - 1) : null}/>
+                <RightArrowIcon onPress={() => setCurrentIndex((prev) => prev + 1) }/>
+              </View>
               <Button style={{ width: '100%' }} onPress={() => router.back()}>
                 {t('flashcard.finish')}
               </Button>
             </View>
           </View>
         </ScrollView>
+       </TouchableWithoutFeedback>
       </BackgroundContainer>
-    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
-  innerContainer: { padding: 20, alignItems: 'center' },
+  innerContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 90,
+    paddingHorizontal: 50,
+  },
   inputContainer: { width: '100%', gap: 20 },
-  buttonContainer: { width: '100%', marginTop: 30, gap: 10 },
+  buttonContainer: { width: '100%', marginTop: 30, gap: 30 },
+  arrowButtons:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });
 
 export default Edit;
