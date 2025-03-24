@@ -54,6 +54,14 @@ const Edit = () => {
     mutate();
   };
 
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleContinue);
+  
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <BackgroundContainer imagePath={require('../../assets/images/challenge.png')}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

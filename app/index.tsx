@@ -4,10 +4,9 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { BackgroundContainer, Button, Popup, Typography } from '@/components';
-import {useMutation} from '@tanstack/react-query';
 import LogoIcon from '../assets/svgs/logo.svg';
 import { useState } from 'react';
-import { createFlashCardSet } from '@/api/challenges';
+import { useCreateFlashCardSet} from '@/hooks';
 
 export default function Index() {
   const { t } = useTranslation();
@@ -17,14 +16,7 @@ export default function Index() {
   const handleCreateFlashCards = () => {
       setPopupVisible(true)
   }
-
-  const {mutate } =  useMutation({
-    mutationFn: (title: string) => createFlashCardSet(title),
-    onSuccess: (data) =>{ 
-      console.log("Utworzony zestaw fiszek:", data); 
-      router.push(`/create/${data.id}`)
-  }
-  });
+  const { mutate } = useCreateFlashCardSet();
 
   const handleSave = (name: string) => {
      mutate(name);

@@ -4,19 +4,36 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { fetchFlashCardSets } from '@/api/challenges';
-import { BackgroundContainer, Button, Typography } from '@/components';
+import { BackgroundContainer, Button, Popup, Typography } from '@/components';
 
 import LogoIcon from '../assets/svgs/logo.svg';
+import { useCreateFlashCardSet } from '@/hooks';
+import { useState } from 'react';
 
 const Challenge = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  const handleCreateFlashCards = () => {
+      setPopupVisible(true)
+  }
+  const { mutate } = useCreateFlashCardSet();
+
+  const handleSave = (name: string) => {
+     mutate(name);
+  };
 
   const { data } = useQuery({ queryKey: ['flash-card-sets'], queryFn: fetchFlashCardSets });
   
   return (
     <BackgroundContainer imagePath={require('../assets/images/challenge.png')}>
       <View style={styles.innerContainer}>
+      <Popup
+        visible={popupVisible}
+        onClose={() => setPopupVisible(false)}
+        onSave={handleSave}
+      />
         <View style={styles.logo}>
           <LogoIcon />
           <Typography>{t('challenge.selectFlashcards')}</Typography>
@@ -29,7 +46,7 @@ const Challenge = () => {
               </Button>
             ))}
           </View>
-          <TouchableOpacity onPress={() => router.push('/create')}>
+          <TouchableOpacity onPress={() => handleCreateFlashCards()}>
             <Typography size="LARGE" font="REGULAR">
               {t('challenge.createNewFlashcards')}
             </Typography>
