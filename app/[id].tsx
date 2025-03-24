@@ -38,7 +38,7 @@ const ChallengeSettings = () => {
         </View>
         <View style={{ gap: 100, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
-            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.push('/create')}>
+            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.push(`/test/${id}`)}>
               {t('settings.testYourself')}
             </Button>
             <Button onPress={() => router.push(`/edit/${id}`)}>{t('settings.editSet')}</Button>

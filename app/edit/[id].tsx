@@ -28,7 +28,6 @@ const Edit = () => {
     queryKey: ['flash-card-set', id],
     queryFn: () => fetchFlashCards(id),
   });
-  console.log(data);
 
   useEffect(() => {
     if (isSuccess && data.length > 0) {

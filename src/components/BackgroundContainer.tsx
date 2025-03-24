@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageBackground, type ImageSourcePropType, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -13,6 +14,7 @@ export const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
   imagePath,
 }) => {
   return (
+    
     <SafeAreaProvider>
       <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>
         <ImageBackground source={imagePath} resizeMode="cover" style={styles.image}>
