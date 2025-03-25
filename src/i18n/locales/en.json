@@ -29,5 +29,16 @@
     "translationPlaceholder": "Enter translation...",
     "continue": "Continue",
     "finish": "Finish"
+  },
+  "summary": {
+    "summary": "Summary",
+    "knowIt": "I know it",
+    "needToReview": "I still need to review this",
+    "finish": "Finish"
+  },
+  "test": {
+    "knowIt": "Known",
+    "dontKnowIt": "Unknown",
+    "next": "Next"
   }
 }

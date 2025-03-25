@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -6,21 +6,22 @@ import {
   TouchableWithoutFeedback, 
   Keyboard 
 } from 'react-native';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {  useQuery } from '@tanstack/react-query';
 import { BackgroundContainer, Button, Typography } from '@/components';
 import { FlashCardInput } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { editFlashCard, fetchFlashCards } from '@/api/challenges';
+import { fetchFlashCards } from '@/api/challenges';
 import LeftArrowIcon from '../../assets/svgs/left-arrow.svg';
 import RightArrowIcon from '../../assets/svgs/right-arrow.svg';
+import { useEditFlashCard } from '@/hooks';
 
 const Edit = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [flashCardId, setFlashCardId] = useState(0);
+  const [flashCardId, setFlashCardId] = useState('');
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
 
@@ -31,27 +32,21 @@ const Edit = () => {
 
   useEffect(() => {
     if (isSuccess && data.length > 0) {
-      setFlashCardId(data[currentIndex]?.id);
-      setQuestion(data[currentIndex]?.question || '');
-      setAnswer(data[currentIndex]?.answer || '');
+      const currentCard = data[currentIndex];
+
+      if (currentCard?.id !== Number(flashCardId)) {
+        setFlashCardId(currentCard.id.toString());
+        setQuestion(currentCard?.question || '');
+        setAnswer(currentCard?.answer || '');
+      }
     }
   }, [isSuccess, currentIndex, data]);
   
- 
-  const { mutate } = useMutation({
-    mutationFn: () => editFlashCard(id, flashCardId, question, answer),
-    onSuccess: () => {
-      if (data && currentIndex < data.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-      } else {
-        router.back();
-      }
-    },
-  });
+  const {mutate} = useEditFlashCard();
 
-  const handleContinue = () => {
-    mutate();
-  };
+  const handleContinue = useCallback(() => {
+    mutate({ id, flashCardId, question, answer });
+  }, [id, flashCardId, question, answer, mutate]);
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleContinue);
@@ -59,10 +54,10 @@ const Edit = () => {
     return () => {
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [handleContinue]);
 
   return (
-    <BackgroundContainer imagePath={require('../../assets/images/challenge.png')}>
+    <BackgroundContainer>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
           <View style={styles.innerContainer}>
@@ -91,8 +86,16 @@ const Edit = () => {
 
             <View style={styles.buttonContainer}>
               <View style={styles.arrowButtons}>
-                <LeftArrowIcon onPress={() => currentIndex >= 1 ? setCurrentIndex((prev) => prev - 1) : null}/>
-                <RightArrowIcon onPress={() => setCurrentIndex((prev) => prev + 1) }/>
+                <LeftArrowIcon onPress={() => {
+                    if (currentIndex > 0) {
+                      setCurrentIndex((prev) => prev - 1);
+                    }
+                  }}/>
+                <RightArrowIcon onPress={() => {
+                    if (currentIndex < (data?.length || 0) - 1) {
+                      setCurrentIndex((prev) => prev + 1);
+                    }
+                  }}/>
               </View>
               <Button style={{ width: '100%' }} onPress={() => router.back()}>
                 {t('flashcard.finish')}

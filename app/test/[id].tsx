@@ -1,67 +1,105 @@
-import { fetchFlashCards } from '@/api/challenges';
-import { BackgroundContainer, Button, FlipCard, Typography} from '@/components';
+import { useState } from 'react';
+import { Pressable, View, StyleSheet } from 'react-native';
+
 import { useQuery } from '@tanstack/react-query';
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Pressable, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSharedValue } from 'react-native-reanimated';
+
+import { fetchFlashCards } from '@/api/challenges';
+import { BackgroundContainer, Button, FlipCard, Typography } from '@/components';
+import { useMarkAsKnown } from '@/hooks';
 
 export default function Test() {
   const isFlipped = useSharedValue(false);
+  const { t } = useTranslation();
+  const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
 
   const { data, isSuccess } = useQuery({
-      queryKey: ['flash-card-set', id],
-      queryFn: () => fetchFlashCards(id),
-    });
+    queryKey: ['flash-card-set', id],
+    queryFn: () => fetchFlashCards(id),
+  });
 
-  useEffect(() => {
-      if (isSuccess && data.length > 0) {
-        setQuestion(data[currentIndex]?.question || '');
-        setAnswer(data[currentIndex]?.answer || '');
-      }
-    }, [isSuccess, currentIndex, data]);
+  const flashcardId = (isSuccess && data?.[currentIndex]?.id) || '';
+  const question = (isSuccess && data?.[currentIndex]?.question) || '';
+  const answer = (isSuccess && data?.[currentIndex]?.answer) || '';
+
+  const { mutate: mutateMarkAsKnown } = useMarkAsKnown();
+  const { mutate: mutateMarkAsUnknown } = useMarkAsKnown();
 
   const handlePress = () => {
     isFlipped.value = !isFlipped.value;
   };
 
+  const handleNext = () => {
+    if (currentIndex < (data?.length || 1) - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      router.navigate(`/summary/${id}`);
+    }
+  };
+
   return (
-    <BackgroundContainer imagePath={require('../../assets/images/challenge.png')}>
-        <View style={styles.innerContainer}>
-            <View>
-                <Typography>Fiszka</Typography>
-                <View style={{flexDirection: 'row'}}>
-                <Typography size='LARGE' font='REGULAR'>{`${currentIndex} / ${data ? data.length - 1 : 1}`}</Typography>
-                </View>
-            </View>
-            <Pressable onPress={handlePress}>
-                <FlipCard isFlipped={isFlipped} question={question} answer={answer} />
-            </Pressable>
-            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Button style={{backgroundColor: '#2A3D6A', width: 100}} onPress={() => console.log("Wiem")}>Nie wiem</Button>
-            <Button style={{backgroundColor: '#2A3D6A',  width: 100 }} onPress={() =>console.log("Nie wiem")}>Wiem</Button>
-            </View>
-                <Button style={{ width: 100 }} onPress={() => setCurrentIndex((prev) => prev + 1)}>Dalej</Button>
+    <BackgroundContainer>
+      <View style={styles.innerContainer}>
+        <View>
+          <Typography>Fiszka</Typography>
+          <View style={styles.counterContainer}>
+            <Typography size="LARGE" font="REGULAR">
+              {`${currentIndex + 1} / ${data ? data.length : 1}`}
+            </Typography>
+          </View>
         </View>
+        <Pressable onPress={handlePress}>
+          <FlipCard isFlipped={isFlipped} question={question} answer={answer} />
+        </Pressable>
+        <View style={styles.buttonRow}>
+          <Button
+            style={[styles.button, styles.blueBackground]}
+            onPress={() => mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' })}
+          >
+            {t('test.knowIt')}
+          </Button>
+          <Button
+            style={[styles.button, styles.blueBackground]}
+            onPress={() => mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' })}
+          >
+            {t('test.dontKnowIt')}
+          </Button>
+        </View>
+        <Button style={styles.nextButton} onPress={handleNext}>
+          {t('test.next')}
+        </Button>
+      </View>
     </BackgroundContainer>
   );
 }
 
 const styles = StyleSheet.create({
-    innerContainer: {
-        flex: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 100,
-        paddingHorizontal: 50,
-    },
-    buttonContainer: {
-        marginTop: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+  innerContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 100,
+    paddingHorizontal: 50,
+  },
+  counterContainer: {
+    flexDirection: 'row',
+  },
+  buttonRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: 100,
+  },
+  blueBackground: {
+    backgroundColor: '#2A3D6A',
+  },
+  nextButton: {
+    width: 100,
+  },
 });

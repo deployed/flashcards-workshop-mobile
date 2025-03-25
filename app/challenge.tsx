@@ -14,20 +14,25 @@ const Challenge = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [popupVisible, setPopupVisible] = useState(false);
+  const { mutate } = useCreateFlashCardSet();
 
   const handleCreateFlashCards = () => {
       setPopupVisible(true)
   }
-  const { mutate } = useCreateFlashCardSet();
 
   const handleSave = (name: string) => {
-     mutate(name);
+    if (!name.trim()) {
+      console.warn('Name cannot be empty');
+      return;
+    }
+
+    mutate(name);
   };
 
   const { data } = useQuery({ queryKey: ['flash-card-sets'], queryFn: fetchFlashCardSets });
   
   return (
-    <BackgroundContainer imagePath={require('../assets/images/challenge.png')}>
+    <BackgroundContainer>
       <View style={styles.innerContainer}>
       <Popup
         visible={popupVisible}
@@ -41,7 +46,7 @@ const Challenge = () => {
         <View style={{ gap: 30, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
           {data?.map((flashcard) => (
-              <Button key={flashcard.id} onPress={() => router.push(`/${flashcard.id}`)}>
+              <Button key={flashcard.id} onPress={() => router.push(`/settings/${flashcard.id}`)}>
                 {flashcard.title}
               </Button>
             ))}

@@ -12,14 +12,19 @@ export default function Index() {
   const { t } = useTranslation();
   const router = useRouter();
   const [popupVisible, setPopupVisible] = useState(false);
+  const { mutate } = useCreateFlashCardSet();
 
   const handleCreateFlashCards = () => {
       setPopupVisible(true)
   }
-  const { mutate } = useCreateFlashCardSet();
 
   const handleSave = (name: string) => {
-     mutate(name);
+    if (!name.trim()) {
+      console.warn('Name cannot be empty');
+      return;
+    }
+
+    mutate(name);
   };
 
 
@@ -51,7 +56,8 @@ const styles = StyleSheet.create({
     paddingVertical: 100,
   },
   content: {
-    gap: 10,
+    rowGap: 10, 
+    marginBottom: 10, 
     justifyContent: 'center',
     alignItems: 'center',
   },

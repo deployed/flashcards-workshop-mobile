@@ -1,17 +1,16 @@
 import React from 'react';
 import { ImageBackground, type ImageSourcePropType, StyleSheet } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 interface BackgroundContainerProps {
   children: React.ReactNode;
-  imagePath: ImageSourcePropType;
+  imagePath?: ImageSourcePropType;
 }
 
 export const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
   children,
-  imagePath,
+  imagePath = require('../../assets/images/challenge.png'),
 }) => {
   return (
     

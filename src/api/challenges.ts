@@ -7,8 +7,15 @@ type FlashCardSet = {
   is_active: boolean;
 };
 
+export type FlashCardUpload = {
+  id: string;
+  answer: string;
+  question: string;
+  flashCardId?: string;
+};
 
-type FlashCard = {
+
+type FlashCardResponse = {
   id: number;
   answer: string;
   question: string;
@@ -32,26 +39,31 @@ export const fetchFlashCardSet = async (id: string): Promise<FlashCardSet> => {
   
 export const createFlashCardSet = async (title: string): Promise<FlashCardSet> => {
   const response = await axios.post<FlashCardSet>(`flash-card-sets/`, { title, description: title, is_Active: true });
-  console.log(response);
+
   return response.data;
 };
 
-export const createFlashCard = async (id: string, question: string, answer: string): Promise<FlashCard> => {
-  const response = await axios.post<FlashCard>(`flash-card-sets/${id}/flash-cards/`, {question , answer, flashcard_set: id});
-  console.log(response.data);
-  return response.data;
-};
-
-
-export const editFlashCard = async (id: string, flashCardId: number,  question: string, answer: string): Promise<any> => {
-  const response = await axios.put<any>(`flash-card-sets/${id}/flash-cards/${flashCardId}/`, {question , answer, flashcard_set: id});
-  console.log(response.data);
-  return response.data;
-};
-
-export const fetchFlashCards = async (id: string): Promise<FlashCard[]> => {
-  const response = await axios.get<FlashCard[]>(`flash-card-sets/${id}/flash-cards/`);
+export const createFlashCard = async (id: string, question: string, answer: string): Promise<FlashCardResponse> => {
+  const response = await axios.post<FlashCardResponse>(`flash-card-sets/${id}/flash-cards/`, {question , answer, flashcard_set: id});
   return response.data;
 };
 
 
+export const editFlashCard = async ({id, flashCardId,  question, answer}: FlashCardUpload): Promise<FlashCardResponse> => {
+  const response = await axios.put<FlashCardResponse>(`flash-card-sets/${id}/flash-cards/${flashCardId}/`, {question , answer, flashcard_set: id});
+  return response.data;
+};
+
+export const fetchFlashCards = async (id: string): Promise<FlashCardResponse[]> => {
+  const response = await axios.get<FlashCardResponse[]>(`flash-card-sets/${id}/flash-cards/`);
+  return response.data;
+};
+
+
+export const markAsKnown = async (id: string, flashcardId: string, user: string): Promise<void> => {
+   await axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-known/`, {user});
+}
+
+export const markAsUnknown = async (id: string, flashcardId: string, user: string): Promise<void> => {
+  await axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-unknown/`, {user});
+}
