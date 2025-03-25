@@ -4,14 +4,15 @@ type FlashCardSet = {
   id: number;
   title: string;
   description: string;
-  is_active: boolean;
+  isActive: boolean;
+  flashcardCount: string;
 };
 
 export type FlashCardUpload = {
-  id: string;
   answer: string;
   question: string;
   flashCardId?: string;
+  flashcardSet?: string;
 };
 
 
@@ -22,14 +23,18 @@ type FlashCardResponse = {
   flashcard_set: string;
 };
 
+type CounterType = {
+  known: number;
+  unknown: number
+}
+
 export const fetchFlashCardSets = async (): Promise<FlashCardSet[]> => {
   const flashCardSets = await axios.get<FlashCardSet[]>('flash-card-sets/');
   return flashCardSets.data;
 };
 
-export const deleteFlashCardSet = async (id: string): Promise<FlashCardSet[]> => {
-    const flashCardSets = await axios.delete<FlashCardSet[]>(`flash-card-sets/${id}/`);
-    return flashCardSets.data;
+export const deleteFlashCardSet = (id: string): Promise<void> => {
+    return axios.delete(`flash-card-sets/${id}/`);
 };
 
 export const fetchFlashCardSet = async (id: string): Promise<FlashCardSet> => {
@@ -38,19 +43,19 @@ export const fetchFlashCardSet = async (id: string): Promise<FlashCardSet> => {
 };
   
 export const createFlashCardSet = async (title: string): Promise<FlashCardSet> => {
-  const response = await axios.post<FlashCardSet>(`flash-card-sets/`, { title, description: title, is_Active: true });
+  const response = await axios.post<FlashCardSet>(`flash-card-sets/`, { title, description: title, isActive: true });
 
   return response.data;
 };
 
-export const createFlashCard = async (id: string, question: string, answer: string): Promise<FlashCardResponse> => {
-  const response = await axios.post<FlashCardResponse>(`flash-card-sets/${id}/flash-cards/`, {question , answer, flashcard_set: id});
+export const createFlashCard = async (flashcardSet: string, question: string, answer: string): Promise<FlashCardResponse> => {
+  const response = await axios.post<FlashCardResponse>(`flash-card-sets/${flashcardSet}/flash-cards/`, {question , answer, flashcardSet});
   return response.data;
 };
 
 
-export const editFlashCard = async ({id, flashCardId,  question, answer}: FlashCardUpload): Promise<FlashCardResponse> => {
-  const response = await axios.put<FlashCardResponse>(`flash-card-sets/${id}/flash-cards/${flashCardId}/`, {question , answer, flashcard_set: id});
+export const editFlashCard = async ({ question, answer, flashcardSet, flashCardId,}: FlashCardUpload): Promise<FlashCardResponse> => {
+  const response = await axios.put<FlashCardResponse>(`flash-card-sets/${flashcardSet}/flash-cards/${flashCardId}/`, {question , answer, flashcardSet});
   return response.data;
 };
 
@@ -59,11 +64,17 @@ export const fetchFlashCards = async (id: string): Promise<FlashCardResponse[]> 
   return response.data;
 };
 
-
 export const markAsKnown = async (id: string, flashcardId: string, user: string): Promise<void> => {
-   await axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-known/`, {user});
+   return axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-known/`, {user});
 }
 
 export const markAsUnknown = async (id: string, flashcardId: string, user: string): Promise<void> => {
-  await axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-unknown/`, {user});
+  return axios.post(`flash-card-sets/${id}/flash-cards/${flashcardId}/mark-as-unknown/`, {user});
+}
+
+export const fetchCounters = async (id: string, user: string): Promise<CounterType> => {
+  const response = await axios.get<CounterType>(`flash-card-sets/${id}/counters/`,{
+    params: { user },
+  });
+  return response.data;
 }

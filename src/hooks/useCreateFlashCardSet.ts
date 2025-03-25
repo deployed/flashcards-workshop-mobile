@@ -12,7 +12,7 @@ export function useCreateFlashCardSet() {
     },
     onSuccess: (data) => { 
       queryClient.invalidateQueries({ queryKey: ['flash-card-sets'] });
-      router.push(`/create/${data.id}`);
+      router.navigate(`/create/${data.id}`);
     },
     onError: (error) => {
       console.error("Mutation failed with error:", error);

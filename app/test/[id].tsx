@@ -8,7 +8,8 @@ import { useSharedValue } from 'react-native-reanimated';
 
 import { fetchFlashCards } from '@/api/challenges';
 import { BackgroundContainer, Button, FlipCard, Typography } from '@/components';
-import { useMarkAsKnown } from '@/hooks';
+import { useMarkAsKnown, useMarkAsUnknown } from '@/hooks';
+import { queryClient } from '@/api/client';
 
 export default function Test() {
   const isFlipped = useSharedValue(false);
@@ -17,17 +18,17 @@ export default function Test() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { data, isSuccess } = useQuery({
+  const { data } = useQuery({
     queryKey: ['flash-card-set', id],
     queryFn: () => fetchFlashCards(id),
   });
-
-  const flashcardId = (isSuccess && data?.[currentIndex]?.id) || '';
-  const question = (isSuccess && data?.[currentIndex]?.question) || '';
-  const answer = (isSuccess && data?.[currentIndex]?.answer) || '';
+   
+  const flashcardId = data?.[currentIndex]?.id || '';
+  const question = data?.[currentIndex]?.question || '';
+  const answer =  data?.[currentIndex]?.answer || '';
 
   const { mutate: mutateMarkAsKnown } = useMarkAsKnown();
-  const { mutate: mutateMarkAsUnknown } = useMarkAsKnown();
+  const { mutate: mutateMarkAsUnknown } = useMarkAsUnknown();
 
   const handlePress = () => {
     isFlipped.value = !isFlipped.value;
@@ -37,6 +38,7 @@ export default function Test() {
     if (currentIndex < (data?.length || 1) - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
+      queryClient.invalidateQueries({ queryKey: ['flash-card-sets-counters', id] });
       router.navigate(`/summary/${id}`);
     }
   };

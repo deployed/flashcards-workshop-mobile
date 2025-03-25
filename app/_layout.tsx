@@ -29,9 +29,11 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="challenge" />
-          {/* <Stack.Screen name="create" />
-          <Stack.Screen name="test"/>
-          <Stack.Screen name="summary"/> */}
+          <Stack.Screen name="create/[id]" />
+          <Stack.Screen name="edit/[id]" />
+          <Stack.Screen name="settings/[id]" />
+          <Stack.Screen name="summary/[id]" />
+          <Stack.Screen name="test/[id]" />
         </Stack>
       </I18nextProvider>
     </QueryClientProvider>

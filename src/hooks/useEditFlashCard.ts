@@ -4,12 +4,12 @@ import { queryClient } from '@/api/client';
 import { useLocalSearchParams } from 'expo-router';
 
 export const useEditFlashCard = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  
+  const { id: flashcardSet } = useLocalSearchParams<{ id: string }>(); 
   return useMutation({
-    mutationFn: ({ id, question, answer , flashCardId}: FlashCardUpload) => editFlashCard({id, flashCardId, question, answer}),
+    mutationFn: ({ question, answer, flashCardId }: FlashCardUpload) => 
+      editFlashCard({ flashcardSet, flashCardId, question, answer }), 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey:  ['flash-card-set', id] });
+      queryClient.invalidateQueries({ queryKey: ['flash-card-set', flashcardSet] });
     },
     onError: (error) => {
       console.error('Failed to edit flashcard:', error);

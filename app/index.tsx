@@ -41,7 +41,7 @@ export default function Index() {
           <Typography>{t('home.createFlashcards')}</Typography>
           <Button onPress={handleCreateFlashCards}>{t('home.startHere')}</Button>
           <Typography>{t('home.challengeYourself')}</Typography>
-          <Button onPress={() => router.push('/challenge')}>{t('home.testYourself')}</Button>
+          <Button onPress={() => router.navigate('/challenge')}>{t('home.testYourself')}</Button>
         </View>
       </View>
     </BackgroundContainer>

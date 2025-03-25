@@ -24,10 +24,10 @@ const ChallengeSettings = () => {
         </View>
         <View style={{ gap: 100, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
-            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.push(`/test/${id}`)}>
+            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.navigate(`/test/${id}`)}>
               {t('settings.testYourself')}
             </Button>
-            <Button onPress={() => router.push(`/edit/${id}`)}>{t('settings.editSet')}</Button>
+            <Button onPress={() => router.navigate(`/edit/${id}`)}>{t('settings.editSet')}</Button>
             <Button onPress={() => mutate()}>{t('settings.deleteSet')}</Button>
           </View>
           <Button style={{ paddingHorizontal: 30 }} onPress={() => router.back()}>

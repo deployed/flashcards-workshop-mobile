@@ -46,7 +46,7 @@ const Challenge = () => {
         <View style={{ gap: 30, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
           {data?.map((flashcard) => (
-              <Button key={flashcard.id} onPress={() => router.push(`/settings/${flashcard.id}`)}>
+              <Button key={flashcard.id} onPress={() => router.navigate(`/settings/${flashcard.id}`)}>
                 {flashcard.title}
               </Button>
             ))}
@@ -56,7 +56,7 @@ const Challenge = () => {
               {t('challenge.createNewFlashcards')}
             </Typography>
           </TouchableOpacity>
-          <Button style={{ paddingHorizontal: 30 }} onPress={() => router.back()}>
+          <Button style={{ paddingHorizontal: 30 }} onPress={() => router.navigate('/')}>
             {t('challenge.back')}
           </Button>
         </View>

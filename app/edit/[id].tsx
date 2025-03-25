@@ -45,7 +45,7 @@ const Edit = () => {
   const {mutate} = useEditFlashCard();
 
   const handleContinue = useCallback(() => {
-    mutate({ id, flashCardId, question, answer });
+    mutate({ flashCardId, question, answer });
   }, [id, flashCardId, question, answer, mutate]);
 
   useEffect(() => {
