@@ -4,7 +4,7 @@ import { Pressable, View, StyleSheet } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useSharedValue } from 'react-native-reanimated';
+import { cancelAnimation, useSharedValue } from 'react-native-reanimated';
 
 import { fetchFlashCards } from '@/api/challenges';
 import { BackgroundContainer, Button, FlipCard, Typography } from '@/components';
@@ -22,7 +22,7 @@ export default function Test() {
     queryKey: ['flash-card-set', id],
     queryFn: () => fetchFlashCards(id),
   });
-   
+
   const flashcardId = data?.[currentIndex]?.id || '';
   const question = data?.[currentIndex]?.question || '';
   const answer =  data?.[currentIndex]?.answer || '';
@@ -35,8 +35,12 @@ export default function Test() {
   };
 
   const handleNext = () => {
+    isFlipped.value = !isFlipped.value;
     if (currentIndex < (data?.length || 1) - 1) {
+      setTimeout(() => {
+      cancelAnimation(isFlipped);
       setCurrentIndex((prev) => prev + 1);
+      }, 400)
     } else {
       queryClient.invalidateQueries({ queryKey: ['flash-card-sets-counters', id] });
       router.navigate(`/summary/${id}`);
@@ -60,20 +64,20 @@ export default function Test() {
         <View style={styles.buttonRow}>
           <Button
             style={[styles.button, styles.blueBackground]}
-            onPress={() => mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' })}
+            onPress={() => {
+            mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' });
+            handleNext()}}
           >
             {t('test.knowIt')}
           </Button>
           <Button
             style={[styles.button, styles.blueBackground]}
-            onPress={() => mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' })}
+            onPress={() => {mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' });
+            handleNext()}}
           >
             {t('test.dontKnowIt')}
           </Button>
         </View>
-        <Button style={styles.nextButton} onPress={handleNext}>
-          {t('test.next')}
-        </Button>
       </View>
     </BackgroundContainer>
   );

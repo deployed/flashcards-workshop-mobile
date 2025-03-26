@@ -52,7 +52,7 @@ export const FlipCard = ({
               <Typography>{question}</Typography>
           </View>
         </Animated.View>
-        <Animated.View
+       <Animated.View
           style={[
             styles.flippedCard,
             styles.flipCard,
