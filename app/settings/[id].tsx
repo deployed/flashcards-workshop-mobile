@@ -1,18 +1,23 @@
 import { StyleSheet, View } from 'react-native';
-import { useQuery} from '@tanstack/react-query';
+
+import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import {  fetchFlashCardSet } from '@/api/challenges';
+
+import { fetchFlashCardSet } from '@/api/challenges';
 import { BackgroundContainer, Button, Typography } from '@/components';
+import { useDeleteFlashCardSet } from '@/hooks';
 
 import LogoIcon from '../../assets/svgs/logo.svg';
-import { useDeleteFlashCardSet } from '@/hooks';
 
 const ChallengeSettings = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const router = useRouter();
-  const { data } = useQuery({ queryKey: ['flash-card-set', id], queryFn: () =>  fetchFlashCardSet(id) });
+  const { data } = useQuery({
+    queryKey: ['flash-card-set', id],
+    queryFn: () => fetchFlashCardSet(id),
+  });
   const { mutate } = useDeleteFlashCardSet();
 
   return (
@@ -20,11 +25,14 @@ const ChallengeSettings = () => {
       <View style={styles.innerContainer}>
         <View style={styles.logo}>
           <LogoIcon />
-          <Typography>{data?.title ?? "Flash Card Set"}</Typography>
+          <Typography>{data?.title ?? 'Flash Card Set'}</Typography>
         </View>
         <View style={{ gap: 100, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
-            <Button style={{ paddingHorizontal: 50 }} onPress={() => router.navigate(`/test/${id}`)}>
+            <Button
+              style={{ paddingHorizontal: 50 }}
+              onPress={() => router.navigate(`/learn/${id}`)}
+            >
               {t('settings.testYourself')}
             </Button>
             <Button onPress={() => router.navigate(`/edit/${id}`)}>{t('settings.editSet')}</Button>

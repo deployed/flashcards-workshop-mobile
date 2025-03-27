@@ -1,33 +1,40 @@
-import { useState } from "react";
-import {
-  Modal,
-  View,
-  TextInput,
-  StyleSheet,
-} from "react-native";
-import { Typography } from "./Typography";
-import { Button } from "./Button";
+import { useState } from 'react';
+import { Modal, View, TextInput, StyleSheet } from 'react-native';
+
 import { useTranslation } from 'react-i18next';
 
-export const Popup = ({ visible, onClose, onSave }: any) => {
-  const [name, setName] = useState("");
+import { Button } from './Button';
+import { Typography } from './Typography';
+
+interface PopupProps {
+  visible: boolean;
+  onClose: () => void;
+  onSave: (name: string) => void;
+}
+
+export const Popup = ({ visible, onClose, onSave }: PopupProps) => {
+  const [name, setName] = useState('');
   const { t } = useTranslation();
 
   return (
     <Modal transparent={true} visible={visible} animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.popup}>
-          <Typography textAlign="left">{t("create.enterSetName")}</Typography>
+          <Typography textAlign="left">{t('create.enterSetName')}</Typography>
           <TextInput
             style={styles.input}
-            placeholder={t("create.placeholder")}
+            placeholder={t('create.placeholder')}
             placeholderTextColor="#999"
             value={name}
             onChangeText={setName}
           />
           <View style={styles.buttonContainer}>
-            <Button onPress={onClose} style={{backgroundColor: 'white', borderColor: '#112249', borderWidth:1}} textColor="DARK">
-            {t("create.cancel")}
+            <Button
+              onPress={onClose}
+              style={{ backgroundColor: 'white', borderColor: '#112249', borderWidth: 1 }}
+              textColor="DARK"
+            >
+              {t('create.cancel')}
             </Button>
             <Button
               onPress={() => {
@@ -35,7 +42,7 @@ export const Popup = ({ visible, onClose, onSave }: any) => {
                 onClose();
               }}
             >
-              {t("create.save")}
+              {t('create.save')}
             </Button>
           </View>
         </View>
@@ -47,16 +54,16 @@ export const Popup = ({ visible, onClose, onSave }: any) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   popup: {
     width: 300,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -65,15 +72,15 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 15,
-    color: "#333",
+    color: '#333',
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

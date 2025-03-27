@@ -13,7 +13,6 @@ export const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
   imagePath = require('../../assets/images/challenge.png'),
 }) => {
   return (
-    
     <SafeAreaProvider>
       <SafeAreaView style={styles.outerContainer} edges={['left', 'right']}>
         <ImageBackground source={imagePath} resizeMode="cover" style={styles.image}>

@@ -1,5 +1,5 @@
 {
-  "include": ["app/**/*", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "include": ["app/**/*", ".expo/types/**/*.ts", "expo-env.d.ts", "src/@types/i18next.d.ts", "src/@types/svg.d.ts"],
   "extends": "expo/tsconfig.base",
   "exclude": ["node_modules"],
   "compilerOptions": {

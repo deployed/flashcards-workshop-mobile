@@ -7,11 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { cancelAnimation, useSharedValue } from 'react-native-reanimated';
 
 import { fetchFlashCards } from '@/api/challenges';
+import { queryClient } from '@/api/client';
 import { BackgroundContainer, Button, FlipCard, Typography } from '@/components';
 import { useMarkAsKnown, useMarkAsUnknown } from '@/hooks';
-import { queryClient } from '@/api/client';
 
-export default function Test() {
+export default function Learn() {
   const isFlipped = useSharedValue(false);
   const { t } = useTranslation();
   const router = useRouter();
@@ -23,9 +23,9 @@ export default function Test() {
     queryFn: () => fetchFlashCards(id),
   });
 
-  const flashcardId = data?.[currentIndex]?.id || '';
-  const question = data?.[currentIndex]?.question || '';
-  const answer =  data?.[currentIndex]?.answer || '';
+  const flashcardId = data?.[currentIndex]?.id ?? '';
+  const question = data?.[currentIndex]?.question ?? '';
+  const answer = data?.[currentIndex]?.answer ?? '';
 
   const { mutate: mutateMarkAsKnown } = useMarkAsKnown();
   const { mutate: mutateMarkAsUnknown } = useMarkAsUnknown();
@@ -38,9 +38,9 @@ export default function Test() {
     isFlipped.value = !isFlipped.value;
     if (currentIndex < (data?.length || 1) - 1) {
       setTimeout(() => {
-      cancelAnimation(isFlipped);
-      setCurrentIndex((prev) => prev + 1);
-      }, 400)
+        cancelAnimation(isFlipped);
+        setCurrentIndex((prev) => prev + 1);
+      }, 400);
     } else {
       queryClient.invalidateQueries({ queryKey: ['flash-card-sets-counters', id] });
       router.navigate(`/summary/${id}`);
@@ -65,15 +65,18 @@ export default function Test() {
           <Button
             style={[styles.button, styles.blueBackground]}
             onPress={() => {
-            mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' });
-            handleNext()}}
+              mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' });
+              handleNext();
+            }}
           >
             {t('test.knowIt')}
           </Button>
           <Button
             style={[styles.button, styles.blueBackground]}
-            onPress={() => {mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' });
-            handleNext()}}
+            onPress={() => {
+              mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' });
+              handleNext();
+            }}
           >
             {t('test.dontKnowIt')}
           </Button>

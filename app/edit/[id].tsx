@@ -1,20 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableWithoutFeedback, 
-  Keyboard 
-} from 'react-native';
-import {  useQuery } from '@tanstack/react-query';
+import { View, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+
+import { useQuery } from '@tanstack/react-query';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+
+import { fetchFlashCards } from '@/api/challenges';
 import { BackgroundContainer, Button, Typography } from '@/components';
 import { FlashCardInput } from '@/components';
-import { useTranslation } from 'react-i18next';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { fetchFlashCards } from '@/api/challenges';
+import { useEditFlashCard } from '@/hooks';
+
 import LeftArrowIcon from '../../assets/svgs/left-arrow.svg';
 import RightArrowIcon from '../../assets/svgs/right-arrow.svg';
-import { useEditFlashCard } from '@/hooks';
 
 const Edit = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -36,13 +33,13 @@ const Edit = () => {
 
       if (currentCard?.id !== Number(flashCardId)) {
         setFlashCardId(currentCard.id.toString());
-        setQuestion(currentCard?.question || '');
-        setAnswer(currentCard?.answer || '');
+        setQuestion(currentCard?.question ?? '');
+        setAnswer(currentCard?.answer ?? '');
       }
     }
   }, [isSuccess, currentIndex, data]);
-  
-  const {mutate} = useEditFlashCard();
+
+  const { mutate } = useEditFlashCard();
 
   const handleContinue = useCallback(() => {
     mutate({ flashCardId, question, answer });
@@ -50,7 +47,7 @@ const Edit = () => {
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleContinue);
-  
+
     return () => {
       keyboardDidHideListener.remove();
     };
@@ -58,12 +55,15 @@ const Edit = () => {
 
   return (
     <BackgroundContainer>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.innerContainer}>
             <View style={{ marginBottom: 50 }}>
-              <Typography size='MEDIUM'>{t('flashcard.title')}</Typography>
-              <Typography size='SUPER_LARGE'>{currentIndex + 1}</Typography>
+              <Typography size="MEDIUM">{t('flashcard.title')}</Typography>
+              <Typography size="SUPER_LARGE">{currentIndex + 1}</Typography>
               <Typography>{t('flashcard.enterBothSides')}</Typography>
             </View>
 
@@ -86,16 +86,20 @@ const Edit = () => {
 
             <View style={styles.buttonContainer}>
               <View style={styles.arrowButtons}>
-                <LeftArrowIcon onPress={() => {
+                <LeftArrowIcon
+                  onPress={() => {
                     if (currentIndex > 0) {
                       setCurrentIndex((prev) => prev - 1);
                     }
-                  }}/>
-                <RightArrowIcon onPress={() => {
+                  }}
+                />
+                <RightArrowIcon
+                  onPress={() => {
                     if (currentIndex < (data?.length || 0) - 1) {
                       setCurrentIndex((prev) => prev + 1);
                     }
-                  }}/>
+                  }}
+                />
               </View>
               <Button style={{ width: '100%' }} onPress={() => router.back()}>
                 {t('flashcard.finish')}
@@ -103,8 +107,8 @@ const Edit = () => {
             </View>
           </View>
         </ScrollView>
-       </TouchableWithoutFeedback>
-      </BackgroundContainer>
+      </TouchableWithoutFeedback>
+    </BackgroundContainer>
   );
 };
 
@@ -119,10 +123,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: { width: '100%', gap: 20 },
   buttonContainer: { width: '100%', marginTop: 30, gap: 30 },
-  arrowButtons:{
+  arrowButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
+  },
 });
 
 export default Edit;

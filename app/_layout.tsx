@@ -33,7 +33,7 @@ export default function RootLayout() {
           <Stack.Screen name="edit/[id]" />
           <Stack.Screen name="settings/[id]" />
           <Stack.Screen name="summary/[id]" />
-          <Stack.Screen name="test/[id]" />
+          <Stack.Screen name="learn/[id]" />
         </Stack>
       </I18nextProvider>
     </QueryClientProvider>
