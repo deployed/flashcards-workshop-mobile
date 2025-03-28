@@ -20,7 +20,7 @@ export const FlipCard = ({ isFlipped, question, answer }: FlipCardType) => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [0, 180]);
 
     const rotateValue = withTiming(`${spinValue}deg`, { duration: 200 });
-    const opacity = Number(isFlipped.value) ? 1 : 0;
+    const opacity = Number(isFlipped.value) < 0.5 ? 1 : 0;
     return {
       transform: [{ rotateX: rotateValue }],
       opacity,
