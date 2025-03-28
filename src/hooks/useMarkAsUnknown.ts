@@ -1,11 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
-import {markAsUnknown} from '../api/challenges';
+import { useLocalSearchParams } from 'expo-router';
+
+import { queryClient } from '@/api/client';
+import { queryKeys } from '@/api/queryKyes';
+
+import { markAsUnknown } from '../api/challenges';
 
 export const useMarkAsUnknown = () => {
-    return useMutation({
-        mutationFn: ({ id, flashCardId, user }: { id: string; flashCardId: string; user: string }) => markAsUnknown(id, flashCardId, user),
-        onError: (error) => {
-          console.error('Failed to mark this flashcard:', error);
-        }
-    });
-}
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  return useMutation({
+    mutationFn: ({ flashCardId, user }: { flashCardId: string; user: string }) =>
+      markAsUnknown(id, flashCardId, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.setCounters(id) });
+    },
+    onError: (error) => {
+      console.error('Failed to mark this flashcard:', error);
+    },
+  });
+};

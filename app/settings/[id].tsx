@@ -5,6 +5,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { fetchFlashCardSet } from '@/api/challenges';
+import { queryKeys } from '@/api/queryKyes';
 import { BackgroundContainer, Button, Typography } from '@/components';
 import { useDeleteFlashCardSet } from '@/hooks';
 
@@ -15,7 +16,7 @@ const ChallengeSettings = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { data } = useQuery({
-    queryKey: ['flash-card-set', id],
+    queryKey: queryKeys.set(id),
     queryFn: () => fetchFlashCardSet(id),
   });
   const { mutate } = useDeleteFlashCardSet();

@@ -18,19 +18,22 @@ type FlipCardType = {
 export const FlipCard = ({ isFlipped, question, answer }: FlipCardType) => {
   const regularCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [0, 180]);
-    const rotateValue = withTiming(`${spinValue}deg`, { duration: 500 });
 
+    const rotateValue = withTiming(`${spinValue}deg`, { duration: 200 });
+    const opacity = Number(isFlipped.value) ? 1 : 0;
     return {
       transform: [{ rotateX: rotateValue }],
+      opacity,
     };
   });
 
   const flippedCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [180, 360]);
-    const rotateValue = withTiming(`${spinValue}deg`, { duration: 500 });
-
+    const rotateValue = withTiming(`${spinValue}deg`, { duration: 200 });
+    const opacity = Number(isFlipped.value) > 0.5 ? 1 : 0;
     return {
       transform: [{ rotateX: rotateValue }],
+      opacity,
     };
   });
 

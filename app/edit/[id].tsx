@@ -6,8 +6,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { fetchFlashCards } from '@/api/challenges';
-import { BackgroundContainer, Button, Typography } from '@/components';
-import { FlashCardInput } from '@/components';
+import { queryKeys } from '@/api/queryKyes';
+import { BackgroundContainer, Button, Typography, FlashCardInput } from '@/components';
 import { useEditFlashCard } from '@/hooks';
 
 import LeftArrowIcon from '../../assets/svgs/left-arrow.svg';
@@ -23,7 +23,7 @@ const Edit = () => {
   const [answer, setAnswer] = useState('');
 
   const { data, isSuccess } = useQuery({
-    queryKey: ['flash-card-set', id],
+    queryKey: queryKeys.set(id),
     queryFn: () => fetchFlashCards(id),
   });
 

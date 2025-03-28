@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+
 import { fetchFlashCardSets } from '@/api/challenges';
+import { queryKeys } from '@/api/queryKyes';
 import { BackgroundContainer, Button, Popup, Typography } from '@/components';
+import { useCreateFlashCardSet } from '@/hooks';
 
 import LogoIcon from '../assets/svgs/logo.svg';
-import { useCreateFlashCardSet } from '@/hooks';
-import { useState } from 'react';
 
 const Challenge = () => {
   const { t } = useTranslation();
@@ -17,8 +19,8 @@ const Challenge = () => {
   const { mutate } = useCreateFlashCardSet();
 
   const handleCreateFlashCards = () => {
-      setPopupVisible(true)
-  }
+    setPopupVisible(true);
+  };
 
   const handleSave = (name: string) => {
     if (!name.trim()) {
@@ -29,24 +31,23 @@ const Challenge = () => {
     mutate(name);
   };
 
-  const { data } = useQuery({ queryKey: ['flash-card-sets'], queryFn: fetchFlashCardSets });
-  
+  const { data } = useQuery({ queryKey: queryKeys.sets(), queryFn: fetchFlashCardSets });
+
   return (
     <BackgroundContainer>
       <View style={styles.innerContainer}>
-      <Popup
-        visible={popupVisible}
-        onClose={() => setPopupVisible(false)}
-        onSave={handleSave}
-      />
+        <Popup visible={popupVisible} onClose={() => setPopupVisible(false)} onSave={handleSave} />
         <View style={styles.logo}>
           <LogoIcon />
           <Typography>{t('challenge.selectFlashcards')}</Typography>
         </View>
         <View style={{ gap: 30, alignItems: 'center' }}>
           <View style={styles.flashCardsButtons}>
-          {data?.map((flashcard) => (
-              <Button key={flashcard.id} onPress={() => router.navigate(`/settings/${flashcard.id}`)}>
+            {data?.map((flashcard) => (
+              <Button
+                key={flashcard.id}
+                onPress={() => router.navigate(`/settings/${flashcard.id}`)}
+              >
                 {flashcard.title}
               </Button>
             ))}

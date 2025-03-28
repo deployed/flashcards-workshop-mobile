@@ -4,10 +4,11 @@ import { Pressable, View, StyleSheet } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { cancelAnimation, useSharedValue } from 'react-native-reanimated';
+import { useSharedValue } from 'react-native-reanimated';
 
 import { fetchFlashCards } from '@/api/challenges';
 import { queryClient } from '@/api/client';
+import { queryKeys } from '@/api/queryKyes';
 import { BackgroundContainer, Button, FlipCard, Typography } from '@/components';
 import { useMarkAsKnown, useMarkAsUnknown } from '@/hooks';
 
@@ -19,7 +20,7 @@ export default function Learn() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { data } = useQuery({
-    queryKey: ['flash-card-set', id],
+    queryKey: queryKeys.set(id),
     queryFn: () => fetchFlashCards(id),
   });
 
@@ -35,12 +36,9 @@ export default function Learn() {
   };
 
   const handleNext = () => {
-    isFlipped.value = !isFlipped.value;
     if (currentIndex < (data?.length || 1) - 1) {
-      setTimeout(() => {
-        cancelAnimation(isFlipped);
-        setCurrentIndex((prev) => prev + 1);
-      }, 400);
+      isFlipped.value = false;
+      setCurrentIndex((prev) => prev + 1);
     } else {
       queryClient.invalidateQueries({ queryKey: ['flash-card-sets-counters', id] });
       router.navigate(`/summary/${id}`);
@@ -65,7 +63,7 @@ export default function Learn() {
           <Button
             style={[styles.button, styles.blueBackground]}
             onPress={() => {
-              mutateMarkAsKnown({ id, flashCardId: flashcardId.toString(), user: '123' });
+              mutateMarkAsKnown({ flashCardId: flashcardId.toString(), user: '123' });
               handleNext();
             }}
           >
@@ -74,7 +72,7 @@ export default function Learn() {
           <Button
             style={[styles.button, styles.blueBackground]}
             onPress={() => {
-              mutateMarkAsUnknown({ id, flashCardId: flashcardId.toString(), user: '123' });
+              mutateMarkAsUnknown({ flashCardId: flashcardId.toString(), user: '123' });
               handleNext();
             }}
           >

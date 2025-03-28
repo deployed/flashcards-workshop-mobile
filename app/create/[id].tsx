@@ -6,8 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { createFlashCard } from '@/api/challenges';
-import { BackgroundContainer, Button, Typography } from '@/components';
-import { FlashCardInput } from '@/components';
+import { BackgroundContainer, Button, Typography, FlashCardInput } from '@/components';
 
 const Create = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -61,7 +60,13 @@ const Create = () => {
               <Button style={{ width: '100%' }} onPress={() => mutate()}>
                 {t('flashcard.continue')}
               </Button>
-              <Button style={{ width: '100%' }} onPress={() => router.back()}>
+              <Button
+                style={{ width: '100%' }}
+                onPress={() => {
+                  mutate();
+                  router.back();
+                }}
+              >
                 {t('flashcard.finish')}
               </Button>
             </View>
